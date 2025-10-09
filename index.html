@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal de Acceso - Passio Vértice</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-container {
+            background: white;
+            border-radius: 20px;
+            padding: 50px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+            animation: slideIn 0.6s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo {
+            width: 360px;
+            height: auto;
+            margin: 0 auto 30px;
+            display: block;
+            filter: drop-shadow(0 10px 25px rgba(30, 58, 138, 0.4));
+            transition: all 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+            filter: drop-shadow(0 15px 35px rgba(30, 58, 138, 0.5));
+        }
+
+        h1 {
+            color: #1e3a8a;
+            margin-bottom: 15px;
+            font-weight: 700;
+            font-size: 2.4em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .subtitle {
+            color: #6b7280;
+            margin-bottom: 40px;
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        .access-form {
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            color: #374151;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            font-family: monospace;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            transform: scale(1.02);
+        }
+
+        .btn {
+            width: 100%;
+            background: linear-gradient(135deg, #3b82f6, #1e3a8a);
+            color: white;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 10px 0;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-admin {
+            background: linear-gradient(135deg, #10b981, #047857);
+        }
+
+        .btn-admin:hover {
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+        }
+
+        .error {
+            background: #fef2f2;
+            color: #dc2626;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            display: none;
+            border-left: 4px solid #dc2626;
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .success {
+            background: #f0fdf4;
+            color: #15803d;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            display: none;
+            border-left: 4px solid #15803d;
+        }
+
+        .info-section {
+            background: #f8fafc;
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 30px;
+            text-align: left;
+        }
+
+        .contact-info {
+            color: #374151;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .contact-info strong {
+            color: #1e3a8a;
+        }
+
+        .loading {
+            display: none;
+            margin: 20px 0;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3b82f6;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .admin-link {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .admin-link a {
+            color: #6b7280;
+            text-decoration: none;
+            font-size: 0.9em;
+            transition: color 0.3s ease;
+        }
+
+        .admin-link a:hover {
+            color: #3b82f6;
+        }
+
+        @media (max-width: 768px) {
+            .login-container {
+                padding: 30px 20px;
+                margin: 10px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .logo {
+                width: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <img src="log_passio_vertice.png" alt="Logo Passio Vértice" class="logo">
+        <h1>Passio Vértice</h1>
+        <p class="subtitle">Portal de Acceso Seguro<br>Sistema de Presentaciones Comerciales</p>
+        
+        <div class="access-form">
+            <div class="form-group">
+                <label for="accessCode">🔑 Código de Acceso</label>
+                <input type="password" id="accessCode" placeholder="Ingrese su código" maxlength="20" autocomplete="off">
+            </div>
+            
+            <button class="btn" onclick="validateAccess()">
+                🚀 Acceder a la Presentación
+            </button>
+            
+            <div class="loading" id="loadingDiv">
+                <div class="spinner"></div>
+                <p style="margin-top: 10px; color: #6b7280;">Validando código...</p>
+            </div>
+            
+            <div class="error" id="errorMessage"></div>
+            <div class="success" id="successMessage"></div>
+        </div>
+
+        
+        <div class="info-section">
+            <h3 style="color: #1e3a8a; margin-bottom: 15px;">🎯 Tipos de Código de Acceso</h3>
+            <div class="contact-info">
+                <p><strong>👤 Códigos de Cliente:</strong></p>
+                <p>• Temporales (2, 3, 7, o 12 días)</p>
+                <p>• Personalizados por empresa</p>
+                <p>• Acceso a presentación específica</p>
+                <br>
+                <p><strong>🔧 Código de Administrador:</strong></p>
+                <p>• Acceso permanente e ilimitado</p>
+                <p>• Para demos y presentaciones</p>
+                <p>• Control completo del sistema</p>
+            </div>
+        </div>
+        
+        <div class="info-section">
+            <h3 style="color: #1e3a8a; margin-bottom: 15px;">📞 ¿Necesita un código de acceso?</h3>
+            <div class="contact-info">
+                <p><strong>Contacte a nuestro equipo comercial:</strong></p>
+                <p>📧 <strong>Email:</strong> comercial@passiovertice.com</p>
+                <p>📱 <strong>WhatsApp:</strong> +57 300 123 4567</p>
+                <p>☎️ <strong>Teléfono:</strong> +57 (1) 234-5678</p>
+                <br>
+                <p style="font-size: 0.9em; color: #6b7280;">
+                    <strong>Nota:</strong> Esta presentación contiene información comercial sensible y está personalizada según los requerimientos específicos de cada cliente.
+                </p>
+            </div>
+        </div>
+        
+        <div class="admin-link">
+            <p><a href="admin.html">🔧 Panel de Administración</a></p>
+        </div>
+    </div>
+
+    <!-- Cargar sistema de códigos -->
+    <script src="config.js"></script>
+    
+    <script>
+        // 🚀 SISTEMA DE VALIDACIÓN DE CÓDIGOS
+        async function validateAccess() {
+            const codeInput = document.getElementById('accessCode');
+            const code = codeInput.value.trim();
+            const errorDiv = document.getElementById('errorMessage');
+            const successDiv = document.getElementById('successMessage');
+            const loadingDiv = document.getElementById('loadingDiv');
+            
+            // Limpiar mensajes previos
+            hideMessages();
+            
+            if (!code) {
+                showError('Por favor ingrese su código de acceso');
+                return;
+            }
+            
+            // Mostrar loading
+            loadingDiv.style.display = 'block';
+            codeInput.disabled = true;
+            
+            // Simular delay de validación (más realista)
+            setTimeout(() => {
+                const result = window.AccessManager.validateCode(code);
+                
+                loadingDiv.style.display = 'none';
+                codeInput.disabled = false;
+                
+                if (result.valid) {
+                    // Código válido - mostrar éxito y redirigir
+                    showSuccess(result.message);
+                    
+                    // Registrar acceso exitoso
+                    window.AccessManager.logAccess(code, true, `Acceso autorizado - ${result.type}`);
+                    
+                    // Alerta de expiración si es cliente temporal
+                    if (result.type === 'client' && result.daysRemaining !== '∞' && result.daysRemaining <= 3) {
+                        setTimeout(() => {
+                            alert(`⚠️ AVISO: Su acceso expira en ${result.daysRemaining} día${result.daysRemaining !== 1 ? 's' : ''}.\n\nContacte a su ejecutivo de cuenta para renovar.`);
+                        }, 1000);
+                    }
+                    
+                    // Redirigir después de 2 segundos
+                    setTimeout(() => {
+                        window.location.href = result.data.redirectTo;
+                    }, 2000);
+                    
+                } else {
+                    // Código inválido
+                    showError(result.message);
+                    codeInput.style.borderColor = '#dc2626';
+                    codeInput.value = '';
+                    
+                    // Registrar intento fallido
+                    window.AccessManager.logAccess(code, false, result.type);
+                    
+                    // Restaurar border después de 3 segundos
+                    setTimeout(() => {
+                        codeInput.style.borderColor = '#e5e7eb';
+                    }, 3000);
+                }
+            }, 1500); // 1.5 segundos de delay
+        }
+        
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.innerHTML = `❌ ${message}`;
+            errorDiv.style.display = 'block';
+            
+            // Auto-ocultar después de 5 segundos
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+            }, 5000);
+        }
+        
+        function showSuccess(message) {
+            const successDiv = document.getElementById('successMessage');
+            successDiv.innerHTML = `✅ ${message}<br><small>Redirigiendo...</small>`;
+            successDiv.style.display = 'block';
+        }
+        
+        function hideMessages() {
+            document.getElementById('errorMessage').style.display = 'none';
+            document.getElementById('successMessage').style.display = 'none';
+        }
+        
+        // 🎹 Permitir Enter para validar
+        document.getElementById('accessCode').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                validateAccess();
+            }
+        });
+        
+        // 🎨 Efecto de enfoque en el input
+        document.getElementById('accessCode').addEventListener('input', function(e) {
+            const code = e.target.value.toUpperCase();
+            e.target.value = code;
+            
+            // Limpiar mensajes mientras escribe
+            hideMessages();
+            e.target.style.borderColor = '#e5e7eb';
+        });
+        
+        // 🚀 Inicialización
+        document.addEventListener('DOMContentLoaded', function() {
+            // Enfocar automáticamente el campo de código
+            document.getElementById('accessCode').focus();
+            
+            // Mostrar estadísticas en consola (solo para desarrollo)
+            const stats = window.AccessManager.getStatistics();
+            console.log('📊 Sistema de Códigos Inicializado:', {
+                'Administradores': stats.totalAdmins,
+                'Clientes Totales': stats.totalClients,
+                'Clientes Activos': stats.activeClients,
+                'Por Expirar': stats.warningClients,
+                'Expirados': stats.expiredClients
+            });
+            
+            // Log de inicialización
+            console.log('🔐 Portal de Acceso Passio Vértice Iniciado');
+            console.log('ℹ️ Códigos disponibles para testing:');
+            console.log('   Admin: ADMIN2025 (permanente)');
+            console.log('   Demo: DEMO2025 (30 días)');
+        });
+        
+        // 🎯 Función para testing (solo desarrollo)
+        window.testCodes = function() {
+            console.log('🧪 Códigos de prueba:');
+            console.table(window.AccessManager.getAllCodes());
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+Fecha,Fuente,Producto,Modelo_Negocio,Precio_Min_USD,Precio_Max_USD,Costo_Min_USD,Costo_Max_USD,ROI_Min_%,ROI_Max_%,Notas,Validado
+2025-10-08,Baseline,aceite,maquila,180,220,48,62,65,75,Datos iniciales presentación,SI
+2025-10-08,Baseline,aceite,planta,280,350,48,62,80,85,Datos iniciales presentación,SI
+2025-10-08,Baseline,aceite,hibrido,280,400,48,62,85,95,Datos iniciales presentación,SI
+2025-10-08,Baseline,nutraceutico,maquila,85,120,28,40,45,55,Datos iniciales presentación,SI
+2025-10-08,Baseline,nutraceutico,planta,150,200,28,40,60,70,Datos iniciales presentación,SI
+2025-10-08,Baseline,nutraceutico,hibrido,150,250,28,40,70,80,Datos iniciales presentación,SI
+2025-10-08,Baseline,pulpa,maquila,12,18,5.5,7.8,25,35,Datos iniciales presentación,SI
+2025-10-08,Baseline,pulpa,planta,22,28,5.5,7.8,40,50,Datos iniciales presentación,SI
+2025-10-08,Baseline,pulpa,hibrido,25,35,5.5,7.8,45,55,Datos iniciales presentación,SI

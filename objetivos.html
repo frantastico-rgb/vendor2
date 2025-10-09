@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Objetivos Estratégicos - Passio Vértice</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            color: #1e3a8a;
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .header p {
+            color: #6b7280;
+            font-size: 1.2rem;
+            line-height: 1.6;
+        }
+
+        .back-nav {
+            margin-bottom: 20px;
+        }
+
+        .back-nav a {
+            background: rgba(255, 255, 255, 0.9);
+            color: #1e3a8a;
+            padding: 12px 24px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .back-nav a:hover {
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+        }
+
+        .objectives-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .objective-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .objective-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+
+        .objective-header {
+            padding: 25px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+            border-bottom: 1px solid #e5e7eb;
+            transition: all 0.3s ease;
+        }
+
+        .objective-header:hover {
+            background: linear-gradient(135deg, #e2e8f0, #cbd5e1);
+        }
+
+        .objective-header.active {
+            background: linear-gradient(135deg, #3b82f6, #1e3a8a);
+            color: white;
+        }
+
+        .objective-title {
+            flex: 1;
+        }
+
+        .objective-title h3 {
+            font-size: 1.4rem;
+            margin-bottom: 8px;
+            color: #1e3a8a;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .objective-header.active .objective-title h3 {
+            color: white;
+        }
+
+        .objective-title p {
+            color: #6b7280;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        .objective-header.active .objective-title p {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .objective-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .expand-btn {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .expand-btn:hover {
+            background: #1e40af;
+            transform: scale(1.05);
+        }
+
+        .objective-header.active .expand-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .expand-arrow {
+            font-size: 1.5rem;
+            color: #3b82f6;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .expand-arrow:hover {
+            color: #1e40af;
+            transform: scale(1.2);
+        }
+
+        .objective-header.active .expand-arrow {
+            color: white;
+            transform: rotate(180deg);
+        }
+
+        .objective-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.5s ease;
+            background: #fafbfc;
+        }
+
+        .objective-content.active {
+            max-height: 1000px;
+        }
+
+        .objective-body {
+            padding: 30px;
+        }
+
+        .objective-body h4 {
+            color: #1e3a8a;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .objective-body p {
+            color: #4b5563;
+            line-height: 1.7;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .feature-item {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #3b82f6;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .feature-item h5 {
+            color: #1e3a8a;
+            font-size: 1rem;
+            margin-bottom: 8px;
+        }
+
+        .feature-item p {
+            color: #6b7280;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #eff6ff, #dbeafe);
+            border: 1px solid #3b82f6;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .highlight-box h5 {
+            color: #1e3a8a;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .progress-indicator {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            border-radius: 50px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            font-weight: 600;
+            color: #1e3a8a;
+            z-index: 1000;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .objective-header {
+                padding: 20px;
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+            
+            .objective-controls {
+                align-self: flex-end;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .progress-indicator {
+                position: relative;
+                margin-bottom: 20px;
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="progress-indicator" id="progressIndicator">
+            Objetivo 0 de 5
+        </div>
+
+        <div class="back-nav">
+            <a href="presentacion.html">← Volver a la Presentación</a>
+        </div>
+
+        <div class="header">
+            <h1>🎯 Objetivos Estratégicos</h1>
+            <p>Descubra en detalle cada objetivo del Proyecto Passio Vértice y su impacto transformacional en su organización</p>
+        </div>
+
+        <div class="objectives-container">
+            <!-- Objetivo 1: Gestión Integral de Valor -->
+            <div class="objective-card" data-objective="1">
+                <div class="objective-header" onclick="toggleObjective(1)">
+                    <div class="objective-title">
+                        <h3>🏗️ Gestión Integral de Valor</h3>
+                        <p>Arquitectura completa que maximiza el valor en cada etapa del proceso empresarial</p>
+                    </div>
+                    <div class="objective-controls">
+                        <button class="expand-btn" onclick="event.stopPropagation(); toggleObjective(1)">
+                            Abrir Sección
+                        </button>
+                        <div class="expand-arrow">▼</div>
+                    </div>
+                </div>
+                <div class="objective-content" id="content-1">
+                    <div class="objective-body">
+                        <h4>🎯 Descripción Completa</h4>
+                        <p>La Gestión Integral de Valor constituye el núcleo estratégico del Proyecto Passio Vértice, diseñado para transformar radicalmente la forma en que su organización crea, captura y distribuye valor. Este objetivo abarca desde la optimización de procesos internos hasta la maximización del impacto en stakeholders externos.</p>
+                        
+                        <h4>🔧 Componentes Clave</h4>
+                        <div class="features-grid">
+                            <div class="feature-item">
+                                <h5>📊 Análisis de Cadena de Valor</h5>
+                                <p>Mapeo completo de procesos para identificar oportunidades de optimización y eliminación de desperdicios</p>
+                            </div>
+                            <div class="feature-item">
+                                <h5>⚡ Automatización Inteligente</h5>
+                                <p>Implementación de tecnologías que incrementan la eficiencia operacional sin comprometer la calidad</p>
+                            </div>
+                            <div class="feature-item">
+                                <h5>🎯 KPIs Estratégicos</h5>
+                                <p>Sistema de métricas alineadas con objetivos organizacionales para medición continua del impacto</p>
+                            </div>
+                            <div class="feature-item">
+                                <h5>🔄 Mejora Continua</h5>
+                                <p>Metodología iterativa que asegura la evolución constante de los procesos de creación de valor</p>
+                            </div>
+                        </div>
+
+                        <div class="highlight-box">
+                            <h5>💡 Beneficio Clave</h5>
+                            <p>La implementación de este objetivo resulta en un incremento promedio del 35% en la eficiencia operacional y una reducción del 25% en costos de operación durante el primer año.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Objetivo 2: Arquitectura Ética y Financiera -->
+            <div class="objective-card" data-objective="2">
+                <div class="objective-header" onclick="toggleObjective(2)">
+                    <div class="objective-title">
+                        <h3>⚖️ Arquitectura Ética y Financiera</h3>
+                        <p>Sistema FTL 2.0 que combina rentabilidad con responsabilidad social y ambiental</p>
+                    </div>
+                    <div class="objective-controls">
+                        <button class="expand-btn" onclick="event.stopPropagation(); toggleObjective(2)">
+                            Abrir Sección
+                        </button>
+                        <div class="expand-arrow">▼</div>
+                    </div>
+                </div>
+                <div class="objective-content" id="content-2">
+                    <div class="objective-body">
+                        <h4>🎯 Enfoque Integral</h4>
+                        <p>La Arquitectura Ética y Financiera representa una innovación disruptiva que integra principios ESG (Environmental, Social, and Governance) en el núcleo de las operaciones financieras. El Sistema FTL 2.0 (Plataforma de Trazabilidad) asegura transparencia total mientras optimiza la rentabilidad.</p>
+                        
+                        <h4>🏛️ Pilares Fundamentales</h4>
+                        <div class="features-grid">
+                            <div class="feature-item">
+                                <h5>🌐 Sistema FTL 2.0</h5>
+                                <p>Plataforma web de trazabilidad que garantiza el origen y el cumplimiento ético de cada transacción</p>
+                            </div>
+                            <div class="feature-item">
+                                <h5>🏛️ Gobernanza FPC</h5>
+                                <p>Fondo Patrimonial Comunitario que asegura la distribución equitativa de beneficios</p>
+                            </div>
+                            <div class="feature-item">
+                                <h5>💼 Modelo B2C/B2B</h5>
+                                <p>Combinación óptima de ingresos premium B2C y alto margen B2B para máxima rentabilidad</p>
+                            </div>
+                            <div class="feature-item">
+                                <h5>🔐 Certificación Vértice</h5>
+                                <p>Protocolos PTL 2.0 que aseguran inmutabilidad y cumplimiento de principios éticos</p>
+                            </div>
+                        </div>
+
+                        <div class="highlight-box">
+                            <h5>📈 Impacto Financiero</h5>
+                            <p>Esta arquitectura permite acceder a mercados premium con márgenes 40% superiores mientras mantiene certificaciones de sostenibilidad que abren nuevas líneas de financiamiento verde.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Objetivo 3: Seguridad Robusta -->
+            <div class="objective-card" data-objective="3">
+                <div class="objective-header" onclick="toggleObjective(3)">
+                    <div class="objective-title">
+                        <h3>🔒 Seguridad Robusta</h3>
+                        <p>Protección integral con certificación de inmutabilidad y cumplimiento ESG</p>
+                    </div>
+                    <div class="objective-controls">
+                        <button class="expand-btn" onclick="event.stopPropagation(); toggleObjective(3)">
+                            Abrir Sección
+                        </button>
+                        <div class="expand-arrow">▼</div>
+                    </div>
+                </div>
+                <div class="objective-content" id="content-3">
+                    <div class="objective-body">
+                        <h4>🛡️ Marco de Seguridad Integral</h4>
+                        <p>La Seguridad Robusta va más allá de la protección tecnológica tradicional, abarcando la integridad de datos, la inmutabilidad de registros y el cumplimiento de los más altos estándares internacionales de gobernanza corporativa y sostenibilidad.</p>
+                        
+                        <h4>🔐 Componentes de Seguridad</h4>
+                        <div class="features-grid">
+                            <div class="feature-item">
+                                <h5>🔒 Inmutabilidad de Datos</h5>
+                                <p>Tecnología blockchain que garantiza que los registros no puedan ser alterados una vez confirmados</p>
+                            </div>
+                            <div class="feature-item">
+                                <h5>📋 Cumplimiento ESG</h5>
+                                <p>Adherencia automática a principios Environmental, Social and Governance verificables</p>
+                            </div>
+                            <div class="feature-item">
+                                <h5>🛡️ Protección Anti-Greenwashing</h5>
+                                <p>Blindaje contra falsas declaraciones ambientales mediante verificación técnica</p>
+                            </div>
+                            <div class="feature-item">
+                                <h5>🔍 Auditoría Continua</h5>
+                                <p>Monitoreo permanente de cumplimiento con reportes automáticos de desviaciones</p>
+                            </div>
+                        </div>
+
+                        <div class="highlight-box">
+                            <h5>🏆 Certificaciones</h5>
+                            <p>El sistema cumple con estándares ISO 27001, SOC 2 Type II, y certificaciones B-Corp, proporcionando el más alto nivel de confianza para stakeholders e inversores.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Objetivo 4: Reportería Avanzada de Impacto -->
+            <div class="objective-card" data-objective="4">
+                <div class="objective-header" onclick="toggleObjective(4)">
+                    <div class="objective-title">
+                        <h3>📊 Reportería Avanzada de Impacto</h3>
+                        <p>Panel FPC con exportación automática de métricas de integridad y distribución</p>
+                    </div>
+                    <div class="objective-controls">
+                        <button class="expand-btn" onclick="event.stopPropagation(); toggleObjective(4)">
+                            Abrir Sección
+                        </button>
+                        <div class="expand-arrow">▼</div>
+                    </div>
+                </div>
+                <div class="objective-content" id="content-4">
+                    <div class="objective-body">
+                        <h4>📈 Sistema de Medición Integral</h4>
+                        <p>La Reportería Avanzada de Impacto constituye el sistema nervioso del Proyecto Passio Vértice, proporcionando visibilidad completa sobre el desempeño social, ambiental y financiero en tiempo real. El Panel de Desempeño Comunal (FPC) automatiza la generación de reportes auditables.</p>
+                        
+                        <h4>📊 Características del Sistema</h4>
+                        <div class="features-grid">
+                            <div class="feature-item">
+                                <h5>🎛️ Panel FPC Interactivo</h5>
+                                <p>Dashboard en tiempo real con métricas de Bono de Integralidad y distribución equitativa</p>
+                            </div>
+                            <div class="feature-item">
+                                <h5>📄 Reportes Automáticos</h5>
+                                <p>Generación automática de reportes de impacto para socios B2B e inversores</p>
+                            </div>
+                            <div class="feature-item">
+                                <h5>🔗 Integración Multi-stakeholder</h5>
+                                <p>Conectividad con sistemas de agricultores, expertos y franquiciados</p>
+                            </div>
+                            <div class="feature-item">
+                                <h5>📋 Métricas de Integridad</h5>
+                                <p>KPIs específicos que miden la adherencia a principios éticos y sostenibles</p>
+                            </div>
+                        </div>
+
+                        <div class="highlight-box">
+                            <h5>💼 Valor para Stakeholders</h5>
+                            <p>Los reportes automáticos reducen en 80% el tiempo de preparación de documentación para auditorías e informes de sostenibilidad, mientras proporcionan transparencia total a inversores y reguladores.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Objetivo 5: Despliegue Global del Modelo -->
+            <div class="objective-card" data-objective="5">
+                <div class="objective-header" onclick="toggleObjective(5)">
+                    <div class="objective-title">
+                        <h3>🌍 Despliegue Global del Modelo</h3>
+                        <p>Estrategia franquiciable para expansión internacional de la Cultura Passio Viva</p>
+                    </div>
+                    <div class="objective-controls">
+                        <button class="expand-btn" onclick="event.stopPropagation(); toggleObjective(5)">
+                            Abrir Sección
+                        </button>
+                        <div class="expand-arrow">▼</div>
+                    </div>
+                </div>
+                <div class="objective-content" id="content-5">
+                    <div class="objective-body">
+                        <h4>🌐 Visión de Escalabilidad Global</h4>
+                        <p>El Despliegue Global del Modelo representa la fase de máximo impacto del Proyecto Passio Vértice, diseñado para replicar el éxito local a escala internacional. El modelo operativo y tecnológico (PTL) está específicamente diseñado para adaptarse a diferentes contextos culturales y regulatorios mientras mantiene la coherencia de los principios fundamentales.</p>
+                        
+                        <h4>🚀 Estrategia de Expansión</h4>
+                        <div class="features-grid">
+                            <div class="feature-item">
+                                <h5>🏢 Modelo Franquiciable</h5>
+                                <p>Sistema de franquicias que permite replicación rápida manteniendo estándares de calidad</p>
+                            </div>
+                            <div class="feature-item">
+                                <h5>🎯 Adaptación Local</h5>
+                                <p>Flexibilidad para ajustarse a regulaciones locales sin comprometer la integridad del modelo</p>
+                            </div>
+                            <div class="feature-item">
+                                <h5>📚 Cultura Passio Viva</h5>
+                                <p>Transferencia de conocimiento y valores que aseguran coherencia global de la propuesta</p>
+                            </div>
+                            <div class="feature-item">
+                                <h5>🔗 Red Global de Impacto</h5>
+                                <p>Conectividad entre franquicias para maximizar sinergias y aprendizaje mutuo</p>
+                            </div>
+                        </div>
+
+                        <div class="highlight-box">
+                            <h5>🎯 Fases de Despliegue</h5>
+                            <p><strong>Passio Dos y Tres:</strong> Expansión controlada a mercados piloto seleccionados. <strong>Círculo IV:</strong> Despliegue global completo con red de franquiciados establecida y operativa en los principales mercados internacionales.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navegación Final -->
+        <div style="background: white; border-radius: 15px; padding: 30px; margin-top: 30px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+            <h3 style="color: #1e3a8a; margin-bottom: 15px;">✅ ¿Ha Revisado Todos los Objetivos?</h3>
+            <p style="color: #6b7280; margin-bottom: 20px;">Continúe explorando la propuesta completa para entender cómo estos objetivos se integran en la solución final.</p>
+            <a href="presentacion.html" style="background: linear-gradient(135deg, #3b82f6, #1e3a8a); color: white; padding: 15px 30px; border-radius: 25px; text-decoration: none; font-weight: 600; display: inline-block; transition: all 0.3s ease;">
+                🚀 Continuar con la Presentación
+            </a>
+        </div>
+    </div>
+
+    <script>
+        let currentActive = null;
+
+        function toggleObjective(objectiveNumber) {
+            const content = document.getElementById(`content-${objectiveNumber}`);
+            const header = document.querySelector(`[data-objective="${objectiveNumber}"] .objective-header`);
+            
+            // Si ya está activo, cerrarlo
+            if (currentActive === objectiveNumber) {
+                content.classList.remove('active');
+                header.classList.remove('active');
+                currentActive = null;
+                updateProgress(0);
+                return;
+            }
+            
+            // Cerrar el objetivo activo actual
+            if (currentActive !== null) {
+                const currentContent = document.getElementById(`content-${currentActive}`);
+                const currentHeader = document.querySelector(`[data-objective="${currentActive}"] .objective-header`);
+                currentContent.classList.remove('active');
+                currentHeader.classList.remove('active');
+            }
+            
+            // Abrir el nuevo objetivo
+            content.classList.add('active');
+            header.classList.add('active');
+            currentActive = objectiveNumber;
+            
+            // Scroll suave al objetivo
+            document.querySelector(`[data-objective="${objectiveNumber}"]`).scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+            
+            updateProgress(objectiveNumber);
+        }
+
+        function updateProgress(objectiveNumber) {
+            const indicator = document.getElementById('progressIndicator');
+            indicator.textContent = `Objetivo ${objectiveNumber} de 5`;
+            
+            if (objectiveNumber === 0) {
+                indicator.textContent = 'Seleccione un objetivo';
+            }
+        }
+
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🎯 Página de Objetivos Iniciada');
+            
+            // Efecto de entrada suave
+            document.body.style.opacity = '0';
+            setTimeout(() => {
+                document.body.style.transition = 'opacity 0.5s ease';
+                document.body.style.opacity = '1';
+            }, 100);
+        });
+
+        // Navegación con teclado
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && currentActive !== null) {
+                toggleObjective(currentActive);
+            }
+            
+            if (e.key === 'ArrowDown' && currentActive !== null && currentActive < 5) {
+                toggleObjective(currentActive + 1);
+            }
+            
+            if (e.key === 'ArrowUp' && currentActive !== null && currentActive > 1) {
+                toggleObjective(currentActive - 1);
+            }
+        });
+    </script>
+</body>
+</html>

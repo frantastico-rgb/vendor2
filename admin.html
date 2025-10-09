@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - Passio Vértice</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .header h1 {
+            color: #1e3a8a;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #6b7280;
+            font-size: 1.1rem;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #3b82f6, #1e3a8a);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+        }
+
+        .stat-card h3 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        .stat-card p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .panels {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .panel {
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 30px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .panel h3 {
+            color: #1e3a8a;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            color: #374151;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #3b82f6, #1e3a8a);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            margin: 5px 5px 5px 0;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #10b981, #047857);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+
+        .generated-code {
+            background: linear-gradient(135deg, #10b981, #047857);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: center;
+            display: none;
+        }
+
+        .generated-code .code {
+            font-family: 'Courier New', monospace;
+            font-size: 24px;
+            font-weight: bold;
+            margin: 10px 0;
+            letter-spacing: 2px;
+        }
+
+        .codes-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .codes-table th,
+        .codes-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .codes-table th {
+            background: #f3f4f6;
+            color: #374151;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .codes-table tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        .status-admin {
+            background: #8b5cf6;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-active {
+            background: #10b981;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-expired {
+            background: #ef4444;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-warning {
+            background: #f59e0b;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            display: none;
+        }
+
+        .alert-success {
+            background: #f0fdf4;
+            color: #15803d;
+            border-left: 4px solid #15803d;
+        }
+
+        .alert-error {
+            background: #fef2f2;
+            color: #dc2626;
+            border-left: 4px solid #dc2626;
+        }
+
+        .back-link {
+            margin-bottom: 20px;
+        }
+
+        .back-link a {
+            color: #3b82f6;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.3s ease;
+        }
+
+        .back-link a:hover {
+            color: #1e40af;
+        }
+
+        @media (max-width: 1024px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            .panels {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .codes-table {
+                font-size: 12px;
+            }
+            
+            .codes-table th,
+            .codes-table td {
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="back-link">
+            <a href="index.html">← Volver al Portal de Acceso</a>
+        </div>
+
+        <div class="header">
+            <h1>🔧 Panel de Administración</h1>
+            <p>Gestión de Códigos de Acceso - Passio Vértice</p>
+        </div>
+
+        <!-- Dashboard de Estadísticas -->
+        <div class="dashboard">
+            <div class="stat-card">
+                <h3 id="activeCount">0</h3>
+                <p>Códigos Activos</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="warningCount">0</h3>
+                <p>Por Expirar</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="totalCount">0</h3>
+                <p>Total Códigos</p>
+            </div>
+        </div>
+
+        <!-- Paneles de Control -->
+        <div class="panels">
+            <!-- Panel de Generación -->
+            <div class="panel">
+                <h3>🔑 Generar Nuevo Código</h3>
+                
+                <div class="form-group">
+                    <label for="clientName">Nombre del Cliente *</label>
+                    <input type="text" id="clientName" placeholder="Ej: Ingenieriapp, Microsoft, SENA" maxlength="50">
+                </div>
+                
+                <div class="form-group">
+                    <label for="validDays">Días de Vigencia</label>
+                    <select id="validDays">
+                        <option value="2">2 días (Urgente)</option>
+                        <option value="3">3 días (Express)</option>
+                        <option value="7" selected>7 días (Estándar)</option>
+                        <option value="14">14 días (Extendido)</option>
+                        <option value="30">30 días (Demo)</option>
+                    </select>
+                </div>
+                
+                <button class="btn" onclick="generateNewCode()">
+                    🚀 Generar Código de Cliente
+                </button>
+                
+                <div class="alert alert-success" id="successAlert"></div>
+                <div class="alert alert-error" id="errorAlert"></div>
+                
+                <div class="generated-code" id="generatedCodeDiv">
+                    <h4>✅ Código Generado Exitosamente</h4>
+                    <div class="code" id="newCodeDisplay"></div>
+                    <p><strong>Cliente:</strong> <span id="clientNameDisplay"></span></p>
+                    <p><strong>Válido hasta:</strong> <span id="expirationDate"></span></p>
+                    <button class="btn btn-success" onclick="copyCodeToClipboard()">
+                        📋 Copiar Código
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Panel de Acciones Rápidas -->
+            <div class="panel">
+                <h3>⚡ Acciones Rápidas</h3>
+                
+                <button class="btn btn-success" onclick="refreshData()">
+                    🔄 Actualizar Datos
+                </button>
+                
+                <button class="btn btn-warning" onclick="exportCodes()">
+                    📊 Exportar Códigos
+                </button>
+                
+                <button class="btn" onclick="testAccess()">
+                    🧪 Probar Acceso
+                </button>
+                
+                <div style="margin-top: 30px;">
+                    <h4 style="color: #374151; margin-bottom: 15px;">📈 Información del Sistema</h4>
+                    <div style="background: white; padding: 20px; border-radius: 8px; font-size: 14px; line-height: 1.6;">
+                        <p><strong>Estado:</strong> <span style="color: #10b981;">✅ Operativo</span></p>
+                        <p><strong>Última actualización:</strong> <span id="lastUpdate">--</span></p>
+                        <p><strong>Códigos almacenados:</strong> LocalStorage del navegador</p>
+                        <p><strong>Código Admin:</strong> <code>ADMIN2025</code> (permanente)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabla de Códigos -->
+        <div class="panel">
+            <h3>📋 Gestión de Códigos Existentes</h3>
+            <div style="overflow-x: auto;">
+                <table class="codes-table" id="codesTable">
+                    <thead>
+                        <tr>
+                            <th>Cliente / Usuario</th>
+                            <th>Código</th>
+                            <th>Tipo</th>
+                            <th>Creado</th>
+                            <th>Vigencia</th>
+                            <th>Días Restantes</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="codesTableBody">
+                        <!-- Se llena dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cargar sistema de códigos -->
+    <script src="config.js"></script>
+    
+    <script>
+        // 🎯 Variables globales
+        let lastGeneratedCode = null;
+
+        // 🚀 Inicialización
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🔧 Panel de Administración Iniciado');
+            refreshData();
+            updateLastUpdateTime();
+        });
+
+        // 🔄 Actualizar todos los datos
+        function refreshData() {
+            updateStatistics();
+            updateCodesTable();
+            updateLastUpdateTime();
+            showSuccess('✅ Datos actualizados correctamente');
+        }
+
+        // 📊 Actualizar estadísticas del dashboard
+        function updateStatistics() {
+            const stats = window.AccessManager.getStatistics();
+            
+            document.getElementById('activeCount').textContent = stats.activeClients;
+            document.getElementById('warningCount').textContent = stats.warningClients;
+            document.getElementById('totalCount').textContent = stats.totalClients + stats.totalAdmins;
+        }
+
+        // 📋 Actualizar tabla de códigos
+        function updateCodesTable() {
+            const tbody = document.getElementById('codesTableBody');
+            const codes = window.AccessManager.getAllCodes();
+            
+            tbody.innerHTML = '';
+
+            codes.forEach(codeInfo => {
+                const row = document.createElement('tr');
+                
+                // Determinar clase de estado
+                let statusClass = 'status-active';
+                let statusText = 'Activo';
+                
+                if (codeInfo.type === 'admin') {
+                    statusClass = 'status-admin';
+                    statusText = 'Admin';
+                } else if (codeInfo.status === 'expired') {
+                    statusClass = 'status-expired';
+                    statusText = 'Expirado';
+                } else if (codeInfo.status === 'warning') {
+                    statusClass = 'status-warning';
+                    statusText = 'Por Expirar';
+                }
+                
+                row.innerHTML = `
+                    <td><strong>${codeInfo.name}</strong></td>
+                    <td><code style="background: #f3f4f6; padding: 4px 8px; border-radius: 4px; font-weight: bold;">${codeInfo.code}</code></td>
+                    <td>${codeInfo.type === 'admin' ? '🔧 Admin' : '👤 Cliente'}</td>
+                    <td>${new Date(codeInfo.created).toLocaleDateString('es-ES')}</td>
+                    <td>${codeInfo.permanent ? '∞ Permanente' : codeInfo.validDays + ' días'}</td>
+                    <td>${codeInfo.daysRemaining === '∞' ? '∞' : codeInfo.daysRemaining + ' días'}</td>
+                    <td><span class="${statusClass}">${statusText}</span></td>
+                    <td>
+                        <button class="btn" onclick="copyCode('${codeInfo.code}')" title="Copiar código">
+                            📋
+                        </button>
+                        ${codeInfo.type !== 'admin' && codeInfo.status !== 'expired' ? `
+                            <button class="btn btn-warning" onclick="extendCode('${codeInfo.code}')" title="Extender vigencia">
+                                📅
+                            </button>
+                        ` : ''}
+                        <button class="btn" onclick="testCode('${codeInfo.code}')" title="Probar código">
+                            🧪
+                        </button>
+                    </td>
+                `;
+                
+                tbody.appendChild(row);
+            });
+        }
+
+        // 🔑 Generar nuevo código de cliente
+        function generateNewCode() {
+            const clientName = document.getElementById('clientName').value.trim();
+            const validDays = parseInt(document.getElementById('validDays').value);
+
+            // Validaciones
+            if (!clientName) {
+                showError('❌ Por favor ingrese el nombre del cliente');
+                document.getElementById('clientName').focus();
+                return;
+            }
+
+            if (clientName.length < 2) {
+                showError('❌ El nombre del cliente debe tener al menos 2 caracteres');
+                return;
+            }
+
+            try {
+                // Generar código usando el sistema
+                const result = window.AccessManager.generateClientCode(clientName, validDays);
+                
+                // Mostrar código generado
+                document.getElementById('newCodeDisplay').textContent = result.code;
+                document.getElementById('clientNameDisplay').textContent = clientName;
+                document.getElementById('expirationDate').textContent = result.expirationDate;
+                document.getElementById('generatedCodeDiv').style.display = 'block';
+                
+                // Guardar para copiar
+                lastGeneratedCode = result.code;
+                
+                // Limpiar formulario
+                document.getElementById('clientName').value = '';
+                document.getElementById('validDays').value = '7';
+                
+                // Actualizar datos
+                refreshData();
+                
+                showSuccess(`✅ Código generado exitosamente para ${clientName}`);
+                
+                console.log('🔑 Nuevo código generado:', {
+                    cliente: clientName,
+                    codigo: result.code,
+                    vigencia: validDays + ' días',
+                    expira: result.expirationDate
+                });
+                
+            } catch (error) {
+                console.error('Error generando código:', error);
+                showError('❌ Error interno generando el código. Intente nuevamente.');
+            }
+        }
+
+        // 📋 Copiar código al portapapeles
+        function copyCode(code) {
+            navigator.clipboard.writeText(code).then(() => {
+                showSuccess(`✅ Código ${code} copiado al portapapeles`);
+            }).catch(() => {
+                // Fallback para navegadores que no soportan clipboard API
+                const textarea = document.createElement('textarea');
+                textarea.value = code;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                showSuccess(`✅ Código ${code} copiado al portapapeles`);
+            });
+        }
+
+        // 📋 Copiar último código generado
+        function copyCodeToClipboard() {
+            if (lastGeneratedCode) {
+                copyCode(lastGeneratedCode);
+            }
+        }
+
+        // 📅 Extender vigencia de código
+        function extendCode(code) {
+            const additionalDays = prompt('¿Cuántos días adicionales desea agregar?', '7');
+            
+            if (additionalDays && !isNaN(additionalDays) && parseInt(additionalDays) > 0) {
+                const success = window.AccessManager.extendCode(code, parseInt(additionalDays));
+                
+                if (success) {
+                    showSuccess(`✅ Código ${code} extendido por ${additionalDays} días adicionales`);
+                    refreshData();
+                } else {
+                    showError('❌ No se pudo extender el código. Verifique que sea válido.');
+                }
+            } else if (additionalDays !== null) {
+                showError('❌ Por favor ingrese un número válido de días');
+            }
+        }
+
+        // 🧪 Probar código específico
+        function testCode(code) {
+            const result = window.AccessManager.validateCode(code);
+            
+            if (result.valid) {
+                alert(`✅ CÓDIGO VÁLIDO\n\nTipo: ${result.type}\nMensaje: ${result.message}\n\n${result.type === 'client' && result.daysRemaining !== '∞' ? 'Días restantes: ' + result.daysRemaining : ''}`);
+            } else {
+                alert(`❌ CÓDIGO INVÁLIDO\n\nMotivo: ${result.message}`);
+            }
+        }
+
+        // 🧪 Probar acceso completo
+        function testAccess() {
+            window.open('index.html', '_blank');
+        }
+
+        // 📊 Exportar códigos (simulado)
+        function exportCodes() {
+            const codes = window.AccessManager.getAllCodes();
+            const csvContent = "Código,Cliente,Tipo,Creado,Vigencia,Estado\n" + 
+                codes.map(c => `${c.code},${c.name},${c.type},${c.created},${c.permanent ? 'Permanente' : c.validDays + ' días'},${c.status}`).join('\n');
+            
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `codigos_passio_vertice_${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+            window.URL.revokeObjectURL(url);
+            
+            showSuccess('✅ Códigos exportados exitosamente');
+        }
+
+        // ⏰ Actualizar timestamp
+        function updateLastUpdateTime() {
+            document.getElementById('lastUpdate').textContent = new Date().toLocaleString('es-ES');
+        }
+
+        // 💬 Mostrar mensaje de éxito
+        function showSuccess(message) {
+            const alert = document.getElementById('successAlert');
+            alert.textContent = message;
+            alert.style.display = 'block';
+            
+            setTimeout(() => {
+                alert.style.display = 'none';
+            }, 4000);
+        }
+
+        // ❌ Mostrar mensaje de error
+        function showError(message) {
+            const alert = document.getElementById('errorAlert');
+            alert.textContent = message;
+            alert.style.display = 'block';
+            
+            setTimeout(() => {
+                alert.style.display = 'none';
+            }, 5000);
+        }
+
+        // 🎹 Atajos de teclado
+        document.addEventListener('keydown', function(e) {
+            // Ctrl + G = Generar código
+            if (e.ctrlKey && e.key.toLowerCase() === 'g') {
+                e.preventDefault();
+                document.getElementById('clientName').focus();
+            }
+            
+            // Ctrl + R = Actualizar
+            if (e.ctrlKey && e.key.toLowerCase() === 'r') {
+                e.preventDefault();
+                refreshData();
+            }
+        });
+
+        // 📱 Auto-refresh cada 5 minutos
+        setInterval(() => {
+            refreshData();
+        }, 5 * 60 * 1000);
+    </script>
+</body>
+</html>
