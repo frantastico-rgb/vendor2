@@ -302,4 +302,27 @@ console.log("calculateROI function exists:", typeof calculateROI);
 
 **¡Sistema Passio Vértice ROI Calculator listo para usar!** 🎉
 
+
+
+
 *Para cualquier duda o sugerencia, consultar la documentación técnica o contactar al equipo de desarrollo.*
+
+
+---
+
+## 📋 Para Reclutadores y Portfolio
+
+Este README contiene documentación técnica del proyecto. 
+
+**Para análisis completo de impacto AgTech y caso de éxito:**  
+👉 **[Ver README-PORTFOLIO.md](README-PORTFOLIO.md)**
+
+- ✅ Cliente real: PasionVertice
+- ✅ Impacto sectorial AgTech  
+- ✅ Arquitectura multi-stakeholder
+- ✅ Métricas de trazabilidad
+
+---
+
+
+
