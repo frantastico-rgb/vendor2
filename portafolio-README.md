@@ -292,4 +292,5 @@ Este proyecto está bajo Licencia MIT - ver [LICENSE.md](LICENSE.md) para detall
 
 **⭐ Si este proyecto te resulta útil, no olvides darle una estrella!**
 
+
 **🔔 Watch este repo para recibir actualizaciones de nuevas funcionalidades**
